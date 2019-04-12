@@ -63,3 +63,25 @@ fun what_month (day: int) =
     in
         number_before_reaching_sum(day, days_in_months) + 1
     end
+
+(* 10. Generate a list of months mapping to a range of days of a year between two given days of a year *)
+fun month_range (d1: int, d2: int) =
+    if d1 > d2
+    then []
+    else what_month(d1) :: month_range(d1 + 1, d2)
+
+(* 11. Find the oldest date in a list of dates -> WORK IN PROGRESS *)
+(* fun oldest (dates: (int * int * int) list) =
+    if null dates
+    then NONE
+    else
+        let
+            val current_oldest = oldest(tl dates)
+        in
+            if isSome current_oldest andalso ~(null dates)
+            then
+                if is_older(hd dates, current_oldest)
+                then hd dates
+                else current_oldest
+            else current_oldest
+        end *)
