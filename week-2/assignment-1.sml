@@ -70,18 +70,16 @@ fun month_range (d1: int, d2: int) =
     then []
     else what_month(d1) :: month_range(d1 + 1, d2)
 
-(* 11. Find the oldest date in a list of dates -> WORK IN PROGRESS *)
-(* fun oldest (dates: (int * int * int) list) =
+(* 11. Find the oldest date in a list of dates *)
+fun oldest (dates: (int * int * int) list) =
     if null dates
     then NONE
+    else if null (tl dates)
+    then SOME (hd dates)
     else
-        let
-            val current_oldest = oldest(tl dates)
+        let val current_oldest = oldest(tl dates)
         in
-            if isSome current_oldest andalso ~(null dates)
-            then
-                if is_older(hd dates, current_oldest)
-                then hd dates
-                else current_oldest
+            if isSome current_oldest andalso is_older(hd dates, valOf current_oldest)
+            then SOME (hd dates)
             else current_oldest
-        end *)
+        end
