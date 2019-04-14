@@ -116,15 +116,9 @@ fun reasonable_date (date: int * int * int) =
         val leap_year_days_in_months = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
         fun is_leap_year (year: int) =
-            let
-                val divisible_by_400 = (year = ((year div 400) * 400))
-                val divisible_by_4 = (year = ((year div 4) * 4))
-                val divisible_by_100 = (year = ((year div 100) * 100))
-            in
-                if (divisible_by_400) orelse (divisible_by_4 andalso not divisible_by_100)
-                then true
-                else false
-            end
+            if (year mod 400 = 0) orelse ((year mod 4 = 0) andalso not (year mod 100 = 0))
+            then true
+            else false
 
         fun get_nth_int (xs: int list, n: int) =
             if n = 1
