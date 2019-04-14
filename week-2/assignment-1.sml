@@ -56,7 +56,7 @@ fun number_before_reaching_sum (sum: int, xs: int list) =
     then 1 + number_before_reaching_sum(sum - hd xs, tl xs)
     else 0
 
-(* 9. Returns a month give a day in a year *)
+(* 9. Returns a month given a day in a year *)
 fun what_month (day: int) =
     let
         val days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -108,3 +108,33 @@ fun number_in_months_challenge (dates: (int * int * int) list, months: int list)
 
 fun dates_in_months_challenge (dates: (int * int * int) list, months: int list) =
     dates_in_months(dates, remove_duplicates months)
+
+(* 13. Validates if a given date is a real date in the common era *)
+fun reasonable_date (date: int * int * int) =
+    let
+        val days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        val leap_year_days_in_months = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+        fun is_leap_year (year: int) =
+            let
+                val divisible_by_400 = (year = ((year div 400) * 400))
+                val divisible_by_4 = (year = ((year div 4) * 4))
+                val divisible_by_100 = (year = ((year div 100) * 100))
+            in
+                if (divisible_by_400) orelse (divisible_by_4 andalso not divisible_by_100)
+                then true
+                else false
+            end
+
+        fun get_nth_int (xs: int list, n: int) =
+            if n = 1
+            then hd xs
+            else get_nth_int(tl xs, n - 1)
+    in
+        if (#1 date < 1) orelse (#2 date < 1) orelse (#2 date > 12) 
+            orelse (#3 date < 1) orelse (#3 date > 31)
+        then false
+        else if is_leap_year(#1 date)
+        then (#3 date) <= get_nth_int(leap_year_days_in_months, #2 date)
+        else (#3 date) <= get_nth_int(days_in_months, #2 date)
+    end
