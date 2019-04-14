@@ -83,3 +83,28 @@ fun oldest (dates: (int * int * int) list) =
             then SOME (hd dates)
             else current_oldest
         end
+
+(* 12. number_in_months and dates_in_months that can deal with duplicate months argument *)
+fun contains (xs: int list, item: int) =
+    if null xs
+    then false
+    else if hd xs = item
+    then true orelse contains(tl xs, item)
+    else false orelse contains(tl xs, item)
+
+fun remove_duplicates (xs: int list) =
+    if null xs
+    then []
+    else
+        let val clean_list = remove_duplicates(tl xs) 
+        in
+            if contains(clean_list, hd xs)
+            then clean_list
+            else hd xs :: clean_list
+        end
+
+fun number_in_months_challenge (dates: (int * int * int) list, months: int list) =
+    number_in_months(dates, remove_duplicates months)
+
+fun dates_in_months_challenge (dates: (int * int * int) list, months: int list) =
+    dates_in_months(dates, remove_duplicates months)
