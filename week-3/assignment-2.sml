@@ -115,3 +115,30 @@ fun sum_cards (cs) =
     in
         sum_cards_tail_rec(cs, 0)
     end
+
+(* 2f. *)
+fun score (cs, goal) =
+    let
+        val sum = sum_cards cs
+        val preliminary_score = if sum > goal then 3 * (sum - goal) else goal - sum
+    in
+        if all_same_color cs
+        then preliminary_score div 2
+        else preliminary_score
+    end
+
+(* 2g. *)
+fun officiate (deck_list, move_list, goal) = 
+    let
+        fun proceed_game (deck, holding, moves) =
+            case moves of
+                [] => holding
+              | Discard card :: remaining_moves => proceed_game(deck, remove_card(holding, card, IllegalMove), remaining_moves)
+              | Draw :: remaining_moves => case deck of
+                                            [] => holding
+                                          | card :: remaining_deck => if sum_cards(card :: holding) > goal
+                                                                      then card :: holding
+                                                                      else proceed_game(remaining_deck, card :: holding, remaining_moves)
+    in
+        score(proceed_game(deck_list, [], move_list), goal)
+    end
