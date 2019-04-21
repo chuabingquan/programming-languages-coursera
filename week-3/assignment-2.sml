@@ -65,3 +65,53 @@ datatype move = Discard of card | Draw
 exception IllegalMove
 
 (* put your solutions for problem 2 here *)
+(* 2a. *)
+fun card_color (suit, _) =
+    case suit of
+        Clubs => Black
+      | Spades => Black
+      | Diamonds => Red
+      | Hearts => Red
+
+(* 2b. *)
+fun card_value (_, rank) =
+    case rank of
+        Num n => n
+      | Ace => 11
+      | _ => 10
+
+(* 2c. *)
+fun remove_card (cs, c, e) =
+    let
+        fun remove_card_helper (cards) =
+            case cards of
+                [] => []
+              | card :: remaining_cards => if card = c
+                                           then remaining_cards
+                                           else card :: remove_card_helper(remaining_cards)
+        val filtered = remove_card_helper(cs)
+    in
+        if filtered = cs 
+        then raise e
+        else filtered
+    end
+
+(* 2d. *)
+fun all_same_color (cs) =
+    case cs of
+        [] => true
+      | card :: [] => true
+      | card :: card' :: remaining_cards => if card_color(card) = card_color(card')
+                                            then all_same_color(card' :: remaining_cards)
+                                            else false
+
+(* 2e. *)
+fun sum_cards (cs) =
+    let
+        fun sum_cards_tail_rec (cards, acc) =
+            case cards of
+                [] => acc
+              | card :: remaining_cards => sum_cards_tail_rec(remaining_cards, acc + card_value(card))
+    in
+        sum_cards_tail_rec(cs, 0)
+    end
