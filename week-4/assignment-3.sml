@@ -54,3 +54,24 @@ val longest_capitalized = longest_string3 o only_capitals
 
 (* 6. *)
 val rev_string = String.implode o List.rev o String.explode
+
+(* 7. *)
+fun first_answer f xs =
+    case xs of
+        [] => raise NoAnswer
+      | x :: xs' => case f x of
+                        NONE => first_answer f xs'
+                      | SOME v => v
+
+(* 8. *)
+fun all_answers f xs =
+    let
+        fun iterator ys acc =
+            case ys of
+                [] => SOME acc
+              | y :: ys' => case f y of
+                                NONE => NONE
+                              | SOME v => iterator ys' (acc @ v)
+    in
+        iterator xs []
+    end
