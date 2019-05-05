@@ -75,3 +75,13 @@ fun all_answers f xs =
     in
         iterator xs []
     end
+
+(* 9a. *)
+val count_wildcards = g (fn () => 1) (fn _ => 0)
+
+(* 9b. *)
+val count_wild_and_variable_lengths = g (fn () => 1) (fn s => String.size s)
+
+(* 9c. *)
+fun count_some_var (str, pattern) =
+	g (fn () => 0) (fn name => if name = str then 1 else 0) pattern
