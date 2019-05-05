@@ -85,3 +85,21 @@ val count_wild_and_variable_lengths = g (fn () => 1) (fn s => String.size s)
 (* 9c. *)
 fun count_some_var (str, pattern) =
 	g (fn () => 0) (fn name => if name = str then 1 else 0) pattern
+
+(* 10. *)
+fun check_pat pattern =
+    let
+        fun extract_variable_names p =
+            case p of
+                Variable name => [name]
+              | TupleP ps => List.foldl (fn (p, acc) => extract_variable_names p @ acc) [] ps
+              | ConstructorP (_, p) => extract_variable_names p
+              | _ => []
+
+        fun has_repetition xs acc =
+            case xs of
+                [] => acc
+              | x :: xs' => has_repetition xs' ((List.exists (fn y => x = y) xs') orelse acc)
+    in
+        not(has_repetition (extract_variable_names pattern) false)
+    end
