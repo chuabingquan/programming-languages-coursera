@@ -103,3 +103,21 @@ fun check_pat pattern =
     in
         not(has_repetition (extract_variable_names pattern) false)
     end
+
+(* 11. *)
+fun match (value, pattern) =
+    case (pattern, value) of
+        (Wildcard, _) => SOME []
+      | (Variable s, _) => SOME [(s, value)]
+      | (UnitP, Unit) => SOME []
+      | (ConstP n, Const n') => if n = n' then SOME [] else NONE
+      | (TupleP ps, Tuple vs) => if List.length ps = List.length vs
+                                 then all_answers (fn (v, p) => match(v, p)) (ListPair.zip(vs, ps))
+                                 else NONE
+      | (ConstructorP(s1, p), Constructor(s2, v)) => if s1 = s2 then match(v, p) else NONE
+      | _ => NONE
+
+(* 12. *)
+fun first_match value xs =
+    SOME (first_answer (fn p => match(value, p)) xs)
+        handle NoAnswer => NONE
