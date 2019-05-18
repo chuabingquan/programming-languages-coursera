@@ -1,10 +1,10 @@
 # Programming Languages (Coursera)
 
-| Part  | Status |
-| :---: |   :---   |
-|   A   | ✅[Certificate](https://www.coursera.org/account/accomplishments/verify/AN5CYX8PMXBV) |
-|   B   |   🚧 WIP  |
-|   C   |   🚧 WIP  |
+|     Part     |  Status  |
+|     :---:    |   :---   |
+| [A](#part-a) | ✅[Certificate](https://www.coursera.org/account/accomplishments/verify/AN5CYX8PMXBV) |
+|       B      |  🚧 WIP  |
+|       C      |  🚧 WIP  |
 
 ## Part A
 The first part of this specialization serves as an introduction to programming languages concepts as well as the functional programming paradigm. Using Standard ML as a reference language, the topics covered includes:
