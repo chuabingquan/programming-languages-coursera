@@ -48,3 +48,38 @@
 (define (stream-add-zero s)
   (lambda () (let ([pair (s)])
                (cons (cons 0 (car pair)) (stream-add-zero (cdr pair))))))
+
+; Q8.
+(define (cycle-lists xs ys)
+  (letrec ([aux (lambda (n) (
+                           let ([x (list-nth-mod xs n)]
+                                [y (list-nth-mod ys n)])
+                            (cons (cons x y) (lambda () (aux (+ n 1))))))])
+    (lambda () (aux 0))))
+
+; Q9.
+(define (vector-assoc v vec)
+  (letrec ([aux (lambda (n) (cond [(> (+ n 1) (vector-length vec)) #f]
+                                  [(pair? (vector-ref vec n)) (if (equal? (car (vector-ref vec n)) v)
+                                                              (vector-ref vec n)
+                                                              (aux (+ n 1)))]
+                                  [#t (aux (+ n 1))]))])
+    (aux 0)))
+
+; Q10.
+(define (cached-assoc xs n)
+  (let* ([cache (make-vector n #f)]
+         [ptr 0])
+    (lambda (v) (let* ([cached-res (vector-assoc v cache)])
+                  (if (equal? cached-res #f)
+                      (let* ([res (assoc v xs)])
+                        (if (equal? res #f)
+                            res
+                            (begin
+                              (vector-set! cache ptr res)
+                              (if (> (+ ptr 2) n)
+                                  (set! ptr 0)
+                                  (set! ptr (+ ptr 1)))
+                              res)))
+                      cached-res)))))
+ 
